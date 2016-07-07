@@ -67,7 +67,7 @@ const render = (state, actions) => {
 	ReactDOM.render(
 		<AllCards 
 			allCards = {state.allCards}
-			onMouseDown = {actions.doAddCard}		// {actions.doAddCard.bind(actions)}
+			onMouseDown = {actions.addCard}		
 		/>,
 		document.getElementById('cards')
 	);
@@ -76,7 +76,7 @@ const render = (state, actions) => {
 		<ChainCards
 			allCards = {state.allCards}
 			chainCards = {state.chainCards}
-			onMouseDown = {actions.doRemoveCard}
+			onMouseDown = {actions.removeCard}
 		/>,
 		document.getElementById('chain')
 	);

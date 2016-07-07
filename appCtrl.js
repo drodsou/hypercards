@@ -1,26 +1,32 @@
-import DrsAppCtrl from './drsLib/drsAppCtrl'
+import DrsAppCtrl from './drsLib/drsAppCtrl2'
 
 
 // -- ACTIONS
 class AppCtrl extends DrsAppCtrl {
 	constructor () {
-		super();   	//binds doXXX methods to new instance
+		super();   	// important
+		
+		this.actions.addCard = (cNdx) => {	// 'this' is bound
+			// TODO:
+			let newState = this.getState();
+			newState.chainCards.push(cNdx)
+			this.setState({chainCards : newState.chainCards}, 'ADD_CARD');
+		}
+		
+		this.actions.removeCard = (rNdx) => {	
+			let newState = this.getState();
+			newState.chainCards.splice(rNdx,1)
+			this.setState(newState, 'REMOVE_CARD');
+		}
+		
+		// this should raise error as actions is non writable
+		// this.actions = {
+		// 	uno: "UNO"
+		// }
+		
 	}
-	
-	doAddCard (cNdx) {	//can type it
-		let newState = this.getState();
-		newState.chainCards.push(cNdx)
-		this.setState(newState, 'ADD_CARD');
-	}
-	
-	doRemoveCard (rNdx) {	
-		let newState = this.getState();
-		newState.chainCards.splice(rNdx,1)
-		this.setState(newState, 'REMOVE_CARD');
-	}
-	
-}
 
+}
 
 var appCtrl = new AppCtrl();
 export default appCtrl;
