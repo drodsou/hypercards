@@ -1,4 +1,5 @@
-import DrsAppCtrl from './drsLib/drsAppCtrl2'
+//import DrsAppCtrl from './drsLib/drsAppCtrl2'
+import DrsAppCtrl from 'drsLib/drsAppCtrl'		
 
 
 // -- ACTIONS

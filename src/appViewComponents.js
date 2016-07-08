@@ -1,14 +1,18 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 // ----------------------------------- REACT COMPONENTS DEFINITION
+// const App = (props) => (
+// 	<h1>App container</h1>
+// )
+
+
 
 /*********************
 Props:
   allCards: [{title, txt}]
 	onMouseDown : fn (ndx: allCardsArrayIndex)
 */
-class AllCards extends React.Component {
+export class AllCards extends React.Component {
 	
 	render() {
 		let rows = []
@@ -25,7 +29,7 @@ class AllCards extends React.Component {
 			}
 		);
 		
-		return <div id="allcards">{rows}</div>
+		return <div id="allcards" style={this.props.style}>{rows}</div>
 	}
 }
 
@@ -36,7 +40,7 @@ Props:
 	chainCards : [] 
 	onMouseDown : fn(rNdx)
 */
-class ChainCards extends React.Component {
+export class ChainCards extends React.Component {
 	
 	render() {
 		let rows = []
@@ -46,7 +50,6 @@ class ChainCards extends React.Component {
 					<div 	key={rNdx} 
 								className="card-open" 
 								onMouseDown={ ()=>this.props.onMouseDown(rNdx) }>
-					>
 						<h1>{this.props.allCards[cNdx].title}</h1>
 						<p>{this.props.allCards[cNdx].text}</p>
 					</div>
@@ -54,33 +57,9 @@ class ChainCards extends React.Component {
 			}
 		);
 		
-		return <div id="chaincards">{rows}</div>
+		return <div id="chaincards" style={this.props.style} >{rows}</div>
 	}
 }
 
 
 
-//----------------------------------------- RENDER INSTRUCTIONS
-
-const render = (state, actions) => {
-
-	ReactDOM.render(
-		<AllCards 
-			allCards = {state.allCards}
-			onMouseDown = {actions.addCard}		
-		/>,
-		document.getElementById('cards')
-	);
-
-	ReactDOM.render(
-		<ChainCards
-			allCards = {state.allCards}
-			chainCards = {state.chainCards}
-			onMouseDown = {actions.removeCard}
-		/>,
-		document.getElementById('chain')
-	);
-	
-};
-
-export default {render}
