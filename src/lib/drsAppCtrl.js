@@ -1,3 +1,19 @@
+/*
+Pseudo redux-like store
+provides:
+ - a state object
+ - a subscriptors calback
+ - an actions object (to add actions there in children) in this fashion:
+ 
+ 			| class AppCtrl extends DrsAppCtrl {
+			|	 	constructor () {
+			|	 		super();   	// important!
+			|	 		
+			|	 		this.actions.addCard = (cNdx) => {	// autobound 'this', important
+			|	 			let newState = this.getState();
+			|			[...]
+ 
+*/
 class DrsAppCtrl {
 	
 	constructor () {

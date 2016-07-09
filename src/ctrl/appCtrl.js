@@ -1,11 +1,11 @@
 //import DrsAppCtrl from './drsLib/drsAppCtrl2'
-import DrsAppCtrl from 'lib/drsAppCtrl'		
+import DrsAppCtrl from 'lib/DrsAppCtrl'		
 
 
 // -- ACTIONS
 class AppCtrl extends DrsAppCtrl {
 	constructor () {
-		super();   	// important
+		super();   	// important!
 		
 		this.actions.addCard = (cNdx) => {	// 'this' is bound
 			// TODO:

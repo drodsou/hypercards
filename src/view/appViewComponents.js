@@ -13,7 +13,11 @@ Props:
 	onMouseDown : fn (ndx: allCardsArrayIndex)
 */
 export class AllCards extends React.Component {
-	
+	//flowtypes
+	props : {
+		allCards : Array<{title:string, text:string}>
+	}
+
 	render() {
 		let rows = []
 		this.props.allCards.forEach( 
