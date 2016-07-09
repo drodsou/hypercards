@@ -24,7 +24,7 @@ module.exports = {
 				exclude: /node_modules/,
 				loader: 'babel',
 				query: {
-					plugins: ['transform-decorators-legacy' ],
+					plugins: ['transform-decorators-legacy', 'typecheck' ],
 					presets : ['es2015', 'stage-0', 'react']
 				}
 			}

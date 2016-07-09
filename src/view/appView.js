@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import themeColor from 'theme/color'
+import themeColor from 'view/theme/color'
 
-import {ChainCards, AllCards} from 'appViewComponents'
+import {ChainCards, AllCards} from './appViewComponents'
 
 //console.log('appView:AllCards',AllCards)
 

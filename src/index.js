@@ -1,8 +1,8 @@
-import appCtrl from 'appCtrl';
-import appView from 'appView';
-import appModel from 'appModel';
+import appCtrl from 'ctrl/appCtrl';
+import appView from 'view/appView';
+import appModel from 'db/appModel';
 
-//import es7 from '_other/es7'
+//import es7 from '_other/es7b'
 
 appCtrl.subscribe(appView.render)
 appCtrl.setState(appModel.initialState)

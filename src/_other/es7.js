@@ -6,8 +6,6 @@ function addCost(sum) {
   }
 }
 
-
-
 @addCost(200)
 class Cellphone {
   constructor() {
@@ -25,7 +23,6 @@ class Cellphone {
 	
 
 }
-
 
 var phone = new Cellphone()
 console.log('ES7',phone, phone.jonch.call(this))
