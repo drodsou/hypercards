@@ -1,4 +1,14 @@
 import React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
+import Snackbar from 'material-ui/Snackbar';
+
+
+//RaisedButton.defaultProps.disableTouchRipple = true;
+//import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+//import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+
+//import { Button, Glyphicon, ButtonToolbar, MenuItem, SplitButton } from 'react-bootstrap';
 
 // ----------------------------------- REACT COMPONENTS DEFINITION
 // const App = (props) => (
@@ -33,7 +43,21 @@ export class AllCards extends React.Component {
 			}
 		);
 		
-		return <div id="allcards" style={this.props.style}>{rows}</div>
+		return (
+			<div> 
+				<div id="allcards" style={this.props.style}>{rows}</div>  
+
+					<RaisedButton>Material!</RaisedButton>
+
+					<Snackbar
+						open={true}
+						message="Hola Manola"
+						action="undo"
+						autoHideDuration={1000}
+					></Snackbar>
+	
+			</div>
+		)
 	}
 }
 

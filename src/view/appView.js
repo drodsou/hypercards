@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import themeColor from 'view/theme/color'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import themeColor from 'view/theme/color'
 import {ChainCards, AllCards} from './appViewComponents'
+
+
 
 //console.log('appView:AllCards',AllCards)
 
@@ -29,6 +32,7 @@ const render = (state, actions) => {
 	
 	ReactDOM.render(
 		(
+		<MuiThemeProvider>
 			<div id="app" style={style.app}>
 				<ChainCards 
 				  style = {style.chaincards}
@@ -42,6 +46,7 @@ const render = (state, actions) => {
 					onMouseDown = {actions.addCard}		
 				/>			
 			</div>
+		</MuiThemeProvider>
 		),
 		document.getElementById('container')
 	);
