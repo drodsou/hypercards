@@ -1,6 +1,7 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
+import Icon1 from 'material-ui/svg-icons/action/donut-small';
 
 
 //RaisedButton.defaultProps.disableTouchRipple = true;
@@ -10,23 +11,35 @@ import Snackbar from 'material-ui/Snackbar';
 
 //import { Button, Glyphicon, ButtonToolbar, MenuItem, SplitButton } from 'react-bootstrap';
 
-// ----------------------------------- REACT COMPONENTS DEFINITION
-// const App = (props) => (
-// 	<h1>App container</h1>
-// )
+export class CardCards extends React.Component {
+	props : {
+		cardData : {cardId : number, title : string, text:string, open:boolean}
+		onClick : Function,	// open/close
+		onDoubleClick :Function		//add remove
+	}
+	
+	react() {
+		return(
+			<div 	style={height : this.props.cardData.open ? '' : '30px'}
+						onMouseDown={ ()=>this.props.onMouseDown(ndx) }>
+				<h1>{r.title}</h1>
+				<p>{r.text}</p>
+			</div>
+		)
+	}
+		
+	
+	
+}
 
 
-
-/*********************
-Props:
-  allCards: [{title, txt}]
-	onMouseDown : fn (ndx: allCardsArrayIndex)
-*/
 export class AllCards extends React.Component {
 	//flowtypes
 	props : {
-		allCards : Array<{title:string, text:string}>
+		allCards : Array<{title : string, text : string}>,
+		onMouseDown : Function
 	}
+	
 
 	render() {
 		let rows = []
@@ -44,22 +57,26 @@ export class AllCards extends React.Component {
 		);
 		
 		return (
-			<div> 
-				<div id="allcards" style={this.props.style}>{rows}</div>  
+			<div style={this.props.style}> 
+				<div id="allcards" >{rows}</div>  
 
-					<RaisedButton>Material!</RaisedButton>
-
-					<Snackbar
-						open={true}
-						message="Hola Manola"
-						action="undo"
-						autoHideDuration={1000}
-					></Snackbar>
+				<RaisedButton>Material!</RaisedButton>
+				<Icon1 />
 	
 			</div>
 		)
 	}
 }
+
+
+// <Snackbar
+// 	open={true}
+// 	message="Hola Manola"
+// 	action="undo"
+// 	autoHideDuration={1000}
+// ></Snackbar>
+
+
 
 
 /*****

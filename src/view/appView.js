@@ -13,16 +13,18 @@ let style = {
 	app : {
 		display : 'flex',
 		flexDirection : 'row',
-		border : '10px solid ' + themeColor.primary
+		//border : '10px solid ' + themeColor.primary
 	},
 	
 	chaincards : {
-		width : '50%',
-		border : '10px solid red',
+		flex:1,
+		//width : '50%',
+		borderRight : '1px solid grey'
 	},
 	
 	allcards : {
-		width  : '50%'
+		flex:1
+		//width  : '50%'
 	}
 	
 }
