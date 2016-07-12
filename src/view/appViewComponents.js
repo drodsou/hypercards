@@ -11,26 +11,7 @@ import Icon1 from 'material-ui/svg-icons/action/donut-small';
 
 //import { Button, Glyphicon, ButtonToolbar, MenuItem, SplitButton } from 'react-bootstrap';
 
-export class CardCards extends React.Component {
-	props : {
-		cardData : {cardId : number, title : string, text:string, open:boolean}
-		onClick : Function,	// open/close
-		onDoubleClick :Function		//add remove
-	}
-	
-	react() {
-		return(
-			<div 	style={height : this.props.cardData.open ? '' : '30px'}
-						onMouseDown={ ()=>this.props.onMouseDown(ndx) }>
-				<h1>{r.title}</h1>
-				<p>{r.text}</p>
-			</div>
-		)
-	}
-		
-	
-	
-}
+
 
 
 export class AllCards extends React.Component {
