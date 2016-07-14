@@ -14,10 +14,11 @@ function renderTest (test) {
 }
 
 // ------------------------------------------ TEST
-import test from 'view/component/Card-test'
+ import test from 'view/component/Card-test'
 
-//console.log('test.js', test.tested[0])
-renderTest(test.tested[0])
+ //console.log('test.js', test.tested[0])
+ renderTest(test.tested[0])
 
+// ---------------
 
 

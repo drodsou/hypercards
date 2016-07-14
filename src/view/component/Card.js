@@ -1,6 +1,8 @@
 import React from 'react';
 import deepExtend from 'deep-extend'
 
+// _priv = {	defaultStyle : {...} }
+
 export default class Card extends React.Component {
 	
 	props : {
@@ -11,45 +13,25 @@ export default class Card extends React.Component {
 			open:boolean
 		},
 		action : {
-			onClick : Function,	// open/close
-			onDoubleClick :Function		//add remove
+			onClickCard : Function,	// open/close
+			onClickButton :Function		//add remove
 		},
 		style : Object
 	}
 	
-	constructor() {
-		_state = this.props.state;
-		let action = this.props.action;
-		
-	  _style = 
-		let style = {
-			container : {
-				backgroundColor : 'yellow',
-				width : '400px'
-			},
-			header : {
-				display:'flex',
-				flexDirection : 'row',
-				border: '1px solid black'
-			},
-			title : {
-				width : '50%'
-			},
-			button :{
-				width : '50px'
-			},
-			text : {}
-		}
-		deepExtend(style, this.props.style);
-
-	}
+	// -----------------------------------
+	//constructor() {}
 	
+	
+	// -----------------------------------
 	render() {
 		//style={height : this.props.cardData.open ? '' : '30px'}
-
-	
-		
-		/**/console.log('Card:sytle-assign', style)
+		const state = this.props.state;
+		const action = this.props.action;
+		let style = this.getDefaultStyle();	// 
+		deepExtend(style, this.props.style);
+			
+		/**/console.log('Card:deepExtend', style)
 
 		let text;
 		if (state.open) {
@@ -63,14 +45,14 @@ export default class Card extends React.Component {
 		//onDoubleClick={ ()=>action.onDoubleClick(state.id) }>		
 		return (
 			<div style={style.container}	
-						onClick={ ()=>action.onClick(state.id) }
+						onClick={ (e)=>action.onClickCard(e,state.id,"patata") }
 			>
 				<div style={style.header}>
 					<div style={style.title}>
 						<h1>{state.title}</h1>
 					</div>
 					<div style={style.button}>
-						<button>##</button>
+						<button onClick={ (e)=>action.onClickButton(e,state.id) }>##</button>
 					</div>
 				</div>
 				{text}
@@ -78,4 +60,28 @@ export default class Card extends React.Component {
 		)
 	}
 	
-}
+	// -----------------------------------
+	getDefaultStyle() {
+		return {
+				container : {
+					backgroundColor : 'yellow',
+					width : '400px'
+				},
+				header : {
+					display:'flex',
+					flexDirection : 'row',
+					border: '1px solid black'
+				},
+				title : {
+					width : '50%'
+				},
+				button :{
+					width : '50px'
+				},
+				text : {}
+			}
+	}
+	
+} // class
+
+// Card.prototype.defaultStyle
