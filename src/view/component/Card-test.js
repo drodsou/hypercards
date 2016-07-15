@@ -1,44 +1,66 @@
 import React from 'react';
-import tester from 'lib/tester'
+import ReactDOM from 'react-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 //import ReactDOMServer from 'react-dom/server';
 
-import Card from './Card'
-console.log('Card',Card)
-// ------------------------------------------- 
+import Test from './Card';   // <-----
+if (!Test) throw ('UPPS: Error importing Test')
+
+
+
+// ---------------------------------------- test props	
 let props = {
-	
 	state : {
 		id:1, 
 		title:'titulo', 
-		text:'textorellamente textuado', 
+		text:`
+<p>textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; </p>
+
+textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; 
+`, 
 		open:true
 	},
 	
 	action : {
-		onClickCard : tester.makeHandler('onClickCard') ,	// open/close
-		onClickButton : tester.makeHandler('onClickButton') 		//add remove
+		onClickCard : (e)=>{
+			console.log('onClickCard')
+		},	
+		onClickButton : (e)=>{
+			console.log('onClickButton')
+			e.stopPropagation()
+			props.state.open = !props.state.open 
+			renderTest()
+		} 		
 	},
 	
 	style : {
 		header : {
-			backgroundColor: 'cyan'
+			
 		}
 	}
-	
+// ----------------------------------------------------	
 }
 
-tester.tested.push(
-	<Card 
-		state={props.state} 
-		action={props.action} 
-		style={props.style}
-	/>
-);
-tester.expected.push('')
 
-// -------------------------------------------
 
-export default tester
-	
-	
+function renderTest () {
+	/**/console.log('renderTest')
+	ReactDOM.render( 
+		(
+		<MuiThemeProvider>
+
+			<Test 
+				state={props.state} 
+				action={props.action} 
+				style={props.style}
+			/>
+
+		</MuiThemeProvider>
+		),
+		document.getElementById('container')
+	);
+}
+
+
+renderTest();	
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import deepExtend from 'deep-extend'
+import Icon1 from 'material-ui/svg-icons/action/eject';
 
 // _priv = {	defaultStyle : {...} }
 
@@ -52,7 +53,9 @@ export default class Card extends React.Component {
 						<h1>{state.title}</h1>
 					</div>
 					<div style={style.button}>
-						<button onClick={ (e)=>action.onClickButton(e,state.id) }>##</button>
+						<button onClick={ (e)=>action.onClickButton(e,state.id) }>
+							<Icon1 style={ {width:'100%'} }/>
+						</button>
 					</div>
 				</div>
 				{text}
@@ -64,7 +67,7 @@ export default class Card extends React.Component {
 	getDefaultStyle() {
 		return {
 				container : {
-					backgroundColor : 'yellow',
+					backgroundColor : '#cccccc',
 					width : '400px'
 				},
 				header : {
@@ -73,10 +76,13 @@ export default class Card extends React.Component {
 					border: '1px solid black'
 				},
 				title : {
-					width : '50%'
+					flex : 8
 				},
 				button :{
-					width : '50px'
+					flex : 2,					
+					display:'flex',
+					justifyContent: 'flex-end',
+					backgroundColor : 'green'
 				},
 				text : {}
 			}
