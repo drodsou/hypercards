@@ -10,25 +10,30 @@ if (!Test) throw ('UPPS: Error importing Test')
 
 // ---------------------------------------- test props	
 let props = {
-	state : {
-		id:1, 
-		title:'titulo', 
-		text:`
-<p>textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; </p>
-
-textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; 
-`, 
-		open:true
-	},
+	nextState : [
+		{
+			id:0,
+			title:'titulo1', 
+			text:'textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado. FIN',
+			open:true
+		},
+		{
+			id:1,
+			title:'titulo2', 
+			text:'gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. FIN',
+			open:true
+		}	
+	]	
+	,
 	
 	action : {
-		onClickCard : (e)=>{
-			console.log('onClickCard')
+		onClickCard : (e, ...args)=>{
+			console.log('onClickCard', args)
 		},	
-		onClickButton : (e)=>{
-			console.log('onClickButton')
+		onClickButton : (e, id)=>{
+			console.log('onClickButton', id)
 			e.stopPropagation()
-			props.state.open = !props.state.open 
+			props.nextState[id].open = !props.nextState[id].open 
 			renderTest()
 		} 		
 	},
@@ -48,12 +53,19 @@ function renderTest () {
 	ReactDOM.render( 
 		(
 		<MuiThemeProvider>
-
+			<div>
 			<Test 
-				state={props.state} 
+				nextState={props.nextState[0]} 
 				action={props.action} 
 				style={props.style}
 			/>
+			
+			<Test 
+				nextState={props.nextState[1]} 
+				action={props.action} 
+				style={props.style}
+			/>
+			</div>
 
 		</MuiThemeProvider>
 		),
