@@ -1,27 +1,32 @@
 import React from 'react';
 
-class Loop extends React.Component {
-	//props solo enteros
+class Timer extends React.Component {
+	//TODO: props solo enteros
 	
 	constructor() {
 		super()
 		this.state = {
-			enabled : false,
+			enabled : true,
 			t : 0,
 			time : 1000,
 			delay : 1000/60,			
-			repeat : 'bounce',		// no, yes, bounce
+			repeat : 'no',		// no, yes, bounce
 			reverse : false
 		}
+		
 	}
 	
-	toggleLoop() {
-		//console.log('toggleLoop')
+	toggleTimer() {
+		console.log('toggleTimer')
 		if (this.state.enabled) {
 			this.state.enabled = false
 		}
 		else {
-			this.setState( {enabled : true} )
+			
+			this.setState( {
+				enabled : true,
+				t : this.state.repeat=='no' && this.state.t >= this.state.time ? 0 : this.state.t
+			})
 		}
 	}
 	
@@ -61,20 +66,26 @@ class Loop extends React.Component {
 			}
 		}
 		
+		this.state.enabled = again
 		return again;
+	}
+	
+	componentWillMount() {
+		//console.log('Timer',this.props)
+		Object.assign(this.state, this.props.newState)
 	}
 	
 	render() {
 
 		const renderedChildren = this.props.children({
 			x: this.state.t/this.state.time, 
-			toggle : this.toggleLoop.bind(this) 
+			toggle : this.toggleTimer.bind(this) 
 		})
 		
 		if (this.calculateNextValue()) {
 			setTimeout(()=>{
 				this.setState(this.state)  // works with null?
-			},this.state.delay)
+			}, this.state.delay)
 		}
 		
     return renderedChildren && React.Children.only(renderedChildren);	// ensure only one children is returned
@@ -83,4 +94,4 @@ class Loop extends React.Component {
 	
 }
 
-export default Loop;
+export default Timer;
