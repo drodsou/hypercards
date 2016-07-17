@@ -1,7 +1,9 @@
 import React from 'react';
 import deepExtend from 'deep-extend'
 import Icon1 from 'material-ui/svg-icons/action/eject';
-import {Motion, spring} from 'react-motion';
+
+import Timer from 'view/component/Timer';
+import ease from 'lib/easing-functions-jquery'
 
 // _priv = {	defaultStyle : {...} }
 
@@ -27,76 +29,11 @@ export default class Card extends React.Component {
 		/**/console.log('Card:constructor')
 		super()
 		this.state = {
-			textOpen : 100,
-			isTextOpen : false
+			maxTextHeight : 200,
+			open : false
 		}
 	}
-	
-	// animate () {
-	// 	let v = this.state.textOpen;
-	// 	//console.log('animate',v)
-	// 	if (this.props.newState.open) this.setState({textOpen: v+10})
-	// 	if (!this.props.newState.open) this.setState({textOpen: v-10})
-	// }
-	
-	// -----------------------------------
-	render() {
-		//style={height : this.props.cardData.open ? '' : '30px'}
-		const newState = this.props.newState;
-		const action = this.props.action;
-		let style = this.getDefaultStyle();	// 
-		deepExtend(style, this.props.style);
-		
-		//console.log('Card:deepExtend', style)
 
-		const MAXTEXT = 200;
-		let textAnim = {start:0, end:0, stiffness:1000, damping:50}
-		if (this.state.isTextOpen) textAnim.start = MAXTEXT
-		if (newState.open) {
-				textAnim.end = MAXTEXT
-				textAnim.stiffness=200
-				textAnim.damping = 30
-		}
-		
-
-		//onDoubleClick={ ()=>action.onDoubleClick(newState.id) }>		
-		return (
-			<div style={style.container}	
-						onClick={ (e)=>action.onClickCard(e,newState.id,"patata") }
-			>
-				<div style={style.header}>
-					<div style={style.title}>
-						<h1>{newState.title}</h1>
-					</div>
-					<div style={style.button}>
-						<button onClick={ (e)=>action.onClickButton(e,newState.id) }>
-							<Icon1 style={ {width:'100%'} }/>
-						</button>
-					</div>
-				</div>
-				<Motion 
-						defaultStyle={{v: textAnim.start}} 
-						style={ {v: spring(textAnim.end,{stiffness: textAnim.stiffness, damping: textAnim.damping, precision:10})} }
-				>
-					{ (motion)=>{ 
-							style.text.height = motion.v
-							if (motion.v < MAXTEXT/2) style.text.marginLeft = '400px'
-							else style.text.marginLeft = `${MAXTEXT+40-motion.v}`
-							//style.text.transform = `rotate(${MAXTEXT-motion.v}deg)`
-							return (
-								<div style={style.text}>
-									<p>{newState.text}</p>
-								</div>
-							)
-						} 
-					}
-				</Motion>
-				
-			</div>
-		)
-	}
-	
-	// -----------------------------------
 	getDefaultStyle() {
 		return {
 				container : {
@@ -120,11 +57,68 @@ export default class Card extends React.Component {
 					backgroundColor : 'green'
 				},
 				text : {
-					overflow: 'hidden'
+					overflow: 'hidden',
+					height : `${this.state.open ? this.state.maxTextHeight : 0}px`
 					
 				}
 			}
 	}
+
+	
+	// -----------------------------------
+	render() {
+		//style={height : this.props.cardData.open ? '' : '30px'}
+		const newState = this.props.newState;
+		const action = this.props.action;
+		let style = this.getDefaultStyle();	// 
+		deepExtend(style, this.props.style);
+		
+		//console.log('Card:deepExtend', style)
+		let timerState = {
+			duration: 500, 
+			enabled: this.state.open ? !newState.open : newState.open,
+			rate : 1000/5
+		}
+
+		return (
+			<div style={style.container}	
+						onClick={ (e)=>action.onClickCard(e,newState.id,"patata") }
+			>
+				<div style={style.header}>
+					<div style={style.title}>
+						<h1>{newState.title}</h1>
+					</div>
+					<div style={style.button}>
+						<button onClick={ (e)=>action.onClickButton(e,newState.id) }>
+							<Icon1 style={ {width:'100%'} }/>
+						</button>
+					</div>
+				</div>
+				<Timer newState={timerState}>
+					{ (timer)=>{ 
+							// first time always rendered even if timer == disabled
+							
+							/**/console.log('Card',this.state.open, newState.open, timerState.enabled,this.state.maxTextHeight)
+							
+							if (newState.open && !this.state.open) style.text.height = timer.x * this.state.maxTextHeight
+							if (!newState.open && this.state.open)style.text.height = this.state.maxTextHeight - timer.x*this.state.maxTextHeight
+							//this.state.open = newState.open
+							//style.text.transform = `rotate(${MAXTEXT-motion.v}deg)`
+							return (
+								<div style={style.text}>
+									<p>{newState.text}</p>
+								</div>
+							)
+						} 
+					}
+				</Timer>
+				
+			</div>
+		)
+	}
+	
+	// -----------------------------------
+	
 	
 } // class
 

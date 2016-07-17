@@ -34,7 +34,7 @@ let f2 = (x)=>(Math.log(x)+4)/4
 let f3 = (x)=>(x*x)
 
 
-let fn = ease.easeInBack
+let fn = f1 //ease.easeInOutElastic
 
 // ---------------
 let _x = 0
@@ -51,19 +51,21 @@ function renderTest () {
 	/**/console.log('renderTest')
 	ReactDOM.render( 
 		(
-		<Test newState={{enabled:'true', time:2000, enabled:false}}>
+		<Test newState={{rate:1000/60, duration: 500, repeat:'no'  }}>
 			{ 
 				(loop)=>{
 					//console.log(loop)
 					let y = 250*fn(loop.x)   // loop.fnX
+					/**/console.log('Timer-test:x,y',loop.x,y)
 					drawCanvas(y)
 					let divstyl = {
 						width:'50px', 
 						height:'50px',
 						backgroundColor : 'red',
+						//transition: `all ${1000/60}ms linear`,
 						marginTop:`${260-y}px`,
 						marginLeft:'320px',
-						boxShadow : `${y/250*10}px ${y/250*10}px 10px gray`
+						//boxShadow : `${y/250*10}px ${y/250*10}px 10px gray`
 					}
 						
 					return (

@@ -15,13 +15,13 @@ let props = {
 			id:0,
 			title:'titulo1', 
 			text:'textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado. FIN',
-			open:true
+			open:false
 		},
 		{
 			id:1,
 			title:'titulo2', 
 			text:'gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. FIN',
-			open:true
+			open:false
 		}	
 	]	
 	,
@@ -60,18 +60,23 @@ function renderTest () {
 				style={props.style}
 			/>
 			
-			<Test 
-				newState={props.newState[1]} 
-				action={props.action} 
-				style={props.style}
-			/>
-			</div>
 
+
+			</div>
 		</MuiThemeProvider>
 		),
 		document.getElementById('container')
 	);
 }
+
+// <Test 
+// 	newState={props.newState[1]} 
+// 	action={props.action} 
+// 	style={props.style}
+// />
+
+
+
 
 
 renderTest();	

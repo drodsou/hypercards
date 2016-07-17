@@ -1,3 +1,12 @@
+/*
+------------------
+The idea of slowing the rate and using css transition linear to interpolate, doest work well
+
+
+----------------------
+*/
+
+
 import React from 'react';
 
 class Timer extends React.Component {
@@ -6,67 +15,81 @@ class Timer extends React.Component {
 	constructor() {
 		super()
 		this.state = {
-			enabled : true,
-			t : 0,
-			time : 1000,
-			delay : 1000/60,			
+			rate : 1000/60,			
+			duration : 1000,
 			repeat : 'no',		// no, yes, bounce
-			reverse : false
+			enabled : true,
+			reverse : false,			
+			t : 0
 		}
 		
 	}
 	
 	toggleTimer() {
-		console.log('toggleTimer')
+		// MOTE: is ok to have to toggle twice if timer stoped by itself at the end of repeat=no (as its still enable if another call happens)
+		//console.log('toggleTimer')
 		if (this.state.enabled) {
 			this.state.enabled = false
 		}
 		else {
 			
 			this.setState( {
-				enabled : true,
-				t : this.state.repeat=='no' && this.state.t >= this.state.time ? 0 : this.state.t
+				enabled : true		
 			})
 		}
 	}
 	
 		
-	calculateNextValue() {
+	requiredAnotherRender() {
 		let st = this.state
 		if (!st.enabled) return false;
-		
 		let again = false
 		
+		if (st.t >= st.duration && st.repeat == 'no') {
+			// end forward no repeat
+			st.t = 0
+			return false
+			// don't disable timer
+		}
+		
+		
 		if (!st.reverse) { // forward middle
-			if (st.t < st.time) {
-				st.t = st.t + st.delay
+			if (st.t < st.duration) {	// may overflow, corrected bellow
+				st.t = st.t + st.rate
 				again = true
 			}	
-			else { // forward end
-				if (st.repeat == 'yes') {
-					st.t = 0
+			
+			if (st.t >= st.duration) { // forward end
+				if (st.repeat == 'no') {
+					st.t = st.duration
+					again = true
+				}
+				else if (st.repeat == 'yes') {
+					st.t = st.t - st.duration 
 					again = true
 				}
 				else if (st.repeat == 'bounce') {
 					st.reverse = true
-					st.t = st.t - st.delay
+					st.t = (st.duration - (st.t - st.duration)) 
 					again = true
 				} 
 			}
 		}
 		else { //reverse middle
-			if (st.t > 0) {
-				st.t = st.t - st.delay
+			if (st.t > 0 ) {
+				st.t = st.t - st.rate	// may overflow, we correct it bellow
 				again = true
 			}	
-			else { // reverse start
+			
+			if (st.t <= 0) { // reverse start
 				st.reverse = false
-				st.t = st.t + st.delay
+				st.t = -st.t //st.rate
 				again = true
 			}
 		}
 		
 		this.state.enabled = again
+		console.log('Timer:rerender',st.t,again, this.state.enabled)
 		return again;
 	}
 	
@@ -76,16 +99,16 @@ class Timer extends React.Component {
 	}
 	
 	render() {
-
+		/**/console.log('Timer:rendering',this.state.t)
 		const renderedChildren = this.props.children({
-			x: this.state.t/this.state.time, 
+			x: this.state.t/this.state.duration, 
 			toggle : this.toggleTimer.bind(this) 
 		})
 		
-		if (this.calculateNextValue()) {
+		if (this.requiredAnotherRender()) {
 			setTimeout(()=>{
 				this.setState(this.state)  // works with null?
-			}, this.state.delay)
+			}, this.state.rate)
 		}
 		
     return renderedChildren && React.Children.only(renderedChildren);	// ensure only one children is returned
