@@ -15,7 +15,7 @@ let props = {
 			id:0,
 			title:'titulo1', 
 			text:'textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado. FIN',
-			open:false
+			open:true
 		},
 		{
 			id:1,
@@ -60,7 +60,11 @@ function renderTest () {
 				style={props.style}
 			/>
 			
-
+			<Test 
+				newState={props.newState[1]} 
+				action={props.action} 
+				style={props.style}
+			/>
 
 			</div>
 		</MuiThemeProvider>
@@ -69,11 +73,7 @@ function renderTest () {
 	);
 }
 
-// <Test 
-// 	newState={props.newState[1]} 
-// 	action={props.action} 
-// 	style={props.style}
-// />
+
 
 
 

@@ -30,7 +30,9 @@ export default class Card extends React.Component {
 		super()
 		this.state = {
 			maxTextHeight : 200,
-			open : false
+			open : false,
+			opening : false,
+			firstTime : true
 		}
 	}
 
@@ -72,13 +74,7 @@ export default class Card extends React.Component {
 		const action = this.props.action;
 		let style = this.getDefaultStyle();	// 
 		deepExtend(style, this.props.style);
-		
-		//console.log('Card:deepExtend', style)
-		let timerState = {
-			duration: 500, 
-			enabled: this.state.open ? !newState.open : newState.open,
-			rate : 1000/5
-		}
+
 
 		return (
 			<div style={style.container}	
@@ -94,15 +90,21 @@ export default class Card extends React.Component {
 						</button>
 					</div>
 				</div>
-				<Timer newState={timerState}>
+				
+				<Timer newState={ {duration:1000, t:1000, rate: 1000/5} }>
 					{ (timer)=>{ 
 							// first time always rendered even if timer == disabled
+							if (!this.state.open && newState.open) this.state.opening = true
+							if (this.state.open && !newState.open) this.state.opening = false
+							this.state.open = newState.open
 							
-							/**/console.log('Card',this.state.open, newState.open, timerState.enabled,this.state.maxTextHeight)
-							
-							if (newState.open && !this.state.open) style.text.height = timer.x * this.state.maxTextHeight
-							if (!newState.open && this.state.open)style.text.height = this.state.maxTextHeight - timer.x*this.state.maxTextHeight
-							//this.state.open = newState.open
+							if (false && this.state.firstTime) {
+								this.state.firstTime = false
+							} else {
+								let y = this.state.opening ? ease.easeOutBounce(timer.x) : ease.easeInBounce(1-timer.x)
+								style.text.height = y * this.state.maxTextHeight
+								this.state.firstTime = false
+							}
 							//style.text.transform = `rotate(${MAXTEXT-motion.v}deg)`
 							return (
 								<div style={style.text}>

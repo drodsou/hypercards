@@ -89,17 +89,18 @@ class Timer extends React.Component {
 		}
 		
 		this.state.enabled = again
-		console.log('Timer:rerender',st.t,again, this.state.enabled)
+		//console.log('Timer:rerender',st.t,again, this.state.enabled)
 		return again;
 	}
 	
 	componentWillMount() {
 		//console.log('Timer',this.props)
 		Object.assign(this.state, this.props.newState)
+		console.log('timer:state', this.state)
 	}
 	
 	render() {
-		/**/console.log('Timer:rendering',this.state.t)
+		console.log('Timer:rendering',this.state.t)
 		const renderedChildren = this.props.children({
 			x: this.state.t/this.state.duration, 
 			toggle : this.toggleTimer.bind(this) 
