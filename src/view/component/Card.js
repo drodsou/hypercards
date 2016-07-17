@@ -9,7 +9,7 @@ export default class Card extends React.Component {
 	
 	// Flow types
 	props : {
-		nextState : {
+		newState : {
 			id:number, 
 			title:string, 
 			text:string, 
@@ -35,14 +35,14 @@ export default class Card extends React.Component {
 	// animate () {
 	// 	let v = this.state.textOpen;
 	// 	//console.log('animate',v)
-	// 	if (this.props.nextState.open) this.setState({textOpen: v+10})
-	// 	if (!this.props.nextState.open) this.setState({textOpen: v-10})
+	// 	if (this.props.newState.open) this.setState({textOpen: v+10})
+	// 	if (!this.props.newState.open) this.setState({textOpen: v-10})
 	// }
 	
 	// -----------------------------------
 	render() {
 		//style={height : this.props.cardData.open ? '' : '30px'}
-		const nextState = this.props.nextState;
+		const newState = this.props.newState;
 		const action = this.props.action;
 		let style = this.getDefaultStyle();	// 
 		deepExtend(style, this.props.style);
@@ -52,24 +52,24 @@ export default class Card extends React.Component {
 		const MAXTEXT = 200;
 		let textAnim = {start:0, end:0, stiffness:1000, damping:50}
 		if (this.state.isTextOpen) textAnim.start = MAXTEXT
-		if (nextState.open) {
+		if (newState.open) {
 				textAnim.end = MAXTEXT
 				textAnim.stiffness=200
 				textAnim.damping = 30
 		}
 		
 
-		//onDoubleClick={ ()=>action.onDoubleClick(nextState.id) }>		
+		//onDoubleClick={ ()=>action.onDoubleClick(newState.id) }>		
 		return (
 			<div style={style.container}	
-						onClick={ (e)=>action.onClickCard(e,nextState.id,"patata") }
+						onClick={ (e)=>action.onClickCard(e,newState.id,"patata") }
 			>
 				<div style={style.header}>
 					<div style={style.title}>
-						<h1>{nextState.title}</h1>
+						<h1>{newState.title}</h1>
 					</div>
 					<div style={style.button}>
-						<button onClick={ (e)=>action.onClickButton(e,nextState.id) }>
+						<button onClick={ (e)=>action.onClickButton(e,newState.id) }>
 							<Icon1 style={ {width:'100%'} }/>
 						</button>
 					</div>
@@ -85,7 +85,7 @@ export default class Card extends React.Component {
 							//style.text.transform = `rotate(${MAXTEXT-motion.v}deg)`
 							return (
 								<div style={style.text}>
-									<p>{nextState.text}</p>
+									<p>{newState.text}</p>
 								</div>
 							)
 						} 
@@ -100,6 +100,7 @@ export default class Card extends React.Component {
 	getDefaultStyle() {
 		return {
 				container : {
+					marginTop : '20px',
 					backgroundColor : 'white',
 					boxShadow: ' 0px 10px 10px 0px rgba(0, 0, 0, 0.2)',
 					width : '400px'

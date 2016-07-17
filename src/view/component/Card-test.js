@@ -10,7 +10,7 @@ if (!Test) throw ('UPPS: Error importing Test')
 
 // ---------------------------------------- test props	
 let props = {
-	nextState : [
+	newState : [
 		{
 			id:0,
 			title:'titulo1', 
@@ -33,7 +33,7 @@ let props = {
 		onClickButton : (e, id)=>{
 			console.log('onClickButton', id)
 			e.stopPropagation()
-			props.nextState[id].open = !props.nextState[id].open 
+			props.newState[id].open = !props.newState[id].open 
 			renderTest()
 		} 		
 	},
@@ -55,13 +55,13 @@ function renderTest () {
 		<MuiThemeProvider>
 			<div>
 			<Test 
-				nextState={props.nextState[0]} 
+				newState={props.newState[0]} 
 				action={props.action} 
 				style={props.style}
 			/>
 			
 			<Test 
-				nextState={props.nextState[1]} 
+				newState={props.newState[1]} 
 				action={props.action} 
 				style={props.style}
 			/>
