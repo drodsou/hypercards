@@ -9,7 +9,7 @@ The idea of slowing the rate and using css transition linear to interpolate, doe
 
 import React from 'react';
 
-class Timer extends React.Component {
+class Animation extends React.Component {
 	//TODO: props solo enteros
 	
 	constructor() {
@@ -20,14 +20,21 @@ class Timer extends React.Component {
 			repeat : 'no',		// no, yes, bounce
 			enabled : true,
 			reverse : false,			
-			t : 0
+			t : 0,
+			firstRender : true
 		}
 		
 	}
 	
-	toggleTimer() {
-		// MOTE: is ok to have to toggle twice if timer stoped by itself at the end of repeat=no (as its still enable if another call happens)
-		//console.log('toggleTimer')
+	// Jumps directly to the last frame of this cycle 
+	skipAnimation() {
+			this.state.t = this.state.duration
+	}
+	
+	// Enable/disable animation
+	toggleAnimation() {
+		// MOTE: is ok to have to toggle twice if Animation stoped by itself at the end of repeat=no (as its still enable if another call happens)
+		//console.log('toggleAnimation')
 		if (this.state.enabled) {
 			this.state.enabled = false
 		}
@@ -49,7 +56,7 @@ class Timer extends React.Component {
 			// end forward no repeat
 			st.t = 0
 			return false
-			// don't disable timer
+			// don't disable Animation
 		}
 		
 		
@@ -89,22 +96,31 @@ class Timer extends React.Component {
 		}
 		
 		this.state.enabled = again
-		//console.log('Timer:rerender',st.t,again, this.state.enabled)
+		//console.log('Animation:rerender',st.t,again, this.state.enabled)
 		return again;
 	}
 	
 	componentWillMount() {
-		//console.log('Timer',this.props)
+		//console.log('Animation',this.props)
 		Object.assign(this.state, this.props.newState)
-		console.log('timer:state', this.state)
+		//console.log('drs-react-animation:state', this.state)
 	}
 	
 	render() {
-		console.log('Timer:rendering',this.state.t)
+		
+		//console.log('drs-react-animation:rendering',this.state.t)
 		const renderedChildren = this.props.children({
-			x: this.state.t/this.state.duration, 
-			toggle : this.toggleTimer.bind(this) 
+			x: this.state.t/this.state.duration,
+			rate : this.state.rate,
+			firstRender : this.state.firstRender,
+			firstFrame : this.state.t === 0, 
+			lastFrame : this.state.t === this.state.duration,
+			skip : this.skipAnimation.bind(this),
+			toggle : this.toggleAnimation.bind(this),
+			
 		})
+		
+		this.state.firstRender = false
 		
 		if (this.requiredAnotherRender()) {
 			setTimeout(()=>{
@@ -118,4 +134,4 @@ class Timer extends React.Component {
 	
 }
 
-export default Timer;
+export default Animation;

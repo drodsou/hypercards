@@ -13,13 +13,28 @@ let props = {
 	newState : [
 		{
 			id:0,
-			title:'titulo1', 
+			title:'titulo0', 
 			text:'textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado; textorellamente textuado. FIN',
 			open:true
-		},
+		}
+		,
 		{
 			id:1,
+			title:'titulo1', 
+			text:'gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. FIN',
+			open:false
+		}	
+		,
+		{
+			id:2,
 			title:'titulo2', 
+			text:'gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. FIN',
+			open:true
+		}			
+		,
+		{
+			id:3,
+			title:'titulo3', 
 			text:'gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. gloperantemente le tex. FIN',
 			open:false
 		}	
@@ -49,16 +64,17 @@ let props = {
 
 
 function renderTest () {
-	/**/console.log('renderTest')
+	//console.log('Card-test:renderTest')
 	ReactDOM.render( 
 		(
 		<MuiThemeProvider>
 			<div>
+
 			<Test 
 				newState={props.newState[0]} 
 				action={props.action} 
 				style={props.style}
-			/>
+			/>		
 			
 			<Test 
 				newState={props.newState[1]} 
@@ -66,6 +82,18 @@ function renderTest () {
 				style={props.style}
 			/>
 
+			<Test 
+				newState={props.newState[2]} 
+				action={props.action} 
+				style={props.style}
+			/>
+			
+			<Test 
+				newState={props.newState[3]} 
+				action={props.action} 
+				style={props.style}
+			/>
+			
 			</div>
 		</MuiThemeProvider>
 		),

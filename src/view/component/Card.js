@@ -1,8 +1,10 @@
+'use strict';
+
 import React from 'react';
 import deepExtend from 'deep-extend'
 import Icon1 from 'material-ui/svg-icons/action/eject';
 
-import Timer from 'view/component/Timer';
+import Animation from 'lib/drs-react-animation';
 import ease from 'lib/easing-functions-jquery'
 
 // _priv = {	defaultStyle : {...} }
@@ -26,13 +28,12 @@ export default class Card extends React.Component {
 	
 	// -----------------------------------
 	constructor() {
-		/**/console.log('Card:constructor')
+		//console.log('Card:constructor')
 		super()
 		this.state = {
 			maxTextHeight : 200,
 			open : false,
-			opening : false,
-			firstTime : true
+			animDirection : 0
 		}
 	}
 
@@ -75,6 +76,7 @@ export default class Card extends React.Component {
 		let style = this.getDefaultStyle();	// 
 		deepExtend(style, this.props.style);
 
+		
 
 		return (
 			<div style={style.container}	
@@ -91,21 +93,38 @@ export default class Card extends React.Component {
 					</div>
 				</div>
 				
-				<Timer newState={ {duration:1000, t:1000, rate: 1000/5} }>
-					{ (timer)=>{ 
-							// first time always rendered even if timer == disabled
-							if (!this.state.open && newState.open) this.state.opening = true
-							if (this.state.open && !newState.open) this.state.opening = false
-							this.state.open = newState.open
-							
-							if (false && this.state.firstTime) {
-								this.state.firstTime = false
+				<Animation newState={ {duration:1000, rate: 1000/60} }>
+					{ (anim) => { 
+
+							if (anim.firstRender) {
+								// firstRender
+								this.state.open = newState.open;
+								this.state.animDirection = 0
+								style.text.height = newState.open ? this.state.maxTextHeight : 0
+								anim.skip()
 							} else {
-								let y = this.state.opening ? ease.easeOutBounce(timer.x) : ease.easeInBounce(1-timer.x)
-								style.text.height = y * this.state.maxTextHeight
-								this.state.firstTime = false
+								if (anim.firstFrame) {
+									// first frame
+									//console.log('Card:firstFrame', newState.open, this.state.open)
+									this.state.animDirection = 0
+									if (newState.open && !this.state.open) this.state.animDirection = 1
+									if (!newState.open && this.state.open) this.state.animDirection = -1
+									this.state.open = newState.open;
+									//console.log('Card:animDirection', this.state.animDirection)
+									if (this.state.animDirection == 0) {
+										//style.text.height = newState.open ? this.state.maxTextHeight : 0
+										anim.skip()
+										console.log('Card:skipping',newState.id)
+									}
+								} else {
+									// rest of frames
+									//let y = (this.state.animDirection == 1) ? anim.x : (1-anim.x)
+									let y = (this.state.animDirection == 1) ? ease.easeOutBounce(anim.x) : ease.easeInBounce(1-anim.x)
+									style.text.height = y * this.state.maxTextHeight
+								}
+								
 							}
-							//style.text.transform = `rotate(${MAXTEXT-motion.v}deg)`
+
 							return (
 								<div style={style.text}>
 									<p>{newState.text}</p>
@@ -113,7 +132,7 @@ export default class Card extends React.Component {
 							)
 						} 
 					}
-				</Timer>
+				</Animation>
 				
 			</div>
 		)

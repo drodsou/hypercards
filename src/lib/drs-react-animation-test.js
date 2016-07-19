@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ease from 'lib/easing-functions-jquery'
 //import ReactDOMServer from 'react-dom/server';
 
-import Test from './Timer';   // <-----
+import Test from 'lib/drs-react-animation';   // <-----
 
 if (!Test) throw ('UPPS: Error importing Test')
 
@@ -53,10 +53,10 @@ function renderTest () {
 		(
 		<Test newState={{rate:1000/60, duration: 500, repeat:'no'  }}>
 			{ 
-				(loop)=>{
-					//console.log(loop)
-					let y = 250*fn(loop.x)   // loop.fnX
-					/**/console.log('Timer-test:x,y',loop.x,y)
+				(anim)=>{
+					//console.log(anim)
+					let y = 250*fn(anim.x)   // anim.fnX
+					/**/console.log('Timer-test:x,y',anim.x,y)
 					drawCanvas(y)
 					let divstyl = {
 						width:'50px', 
@@ -70,7 +70,7 @@ function renderTest () {
 						
 					return (
 						<div>
-							<button onClick={loop.toggle} style={{width:'300px', height:'50px'}}
+							<button onClick={anim.toggle} style={{width:'300px', height:'50px'}}
 							>
 								Dalle
 							</button> 
