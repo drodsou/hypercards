@@ -14,7 +14,10 @@ class Animation extends React.Component {
 	
 	constructor() {
 		super()
-		this.state = {
+		
+		this.componentUpdate = true
+		
+		this.curState = {
 			rate : 1000/60,			
 			duration : 1000,
 			repeat : 'no',		// no, yes, bounce
@@ -28,105 +31,113 @@ class Animation extends React.Component {
 	
 	// Jumps directly to the last frame of this cycle 
 	skipAnimation() {
-			this.state.t = this.state.duration
+			this.curState.t = this.curState.duration
 	}
 	
 	// Enable/disable animation
 	toggleAnimation() {
 		// MOTE: is ok to have to toggle twice if Animation stoped by itself at the end of repeat=no (as its still enable if another call happens)
 		//console.log('toggleAnimation')
-		if (this.state.enabled) {
-			this.state.enabled = false
+		if (this.curState.enabled) {
+			this.curState.enabled = false
 		}
 		else {
-			
-			this.setState( {
-				enabled : true		
-			})
+			this.curState.enabled = true
+			this.forceUpdate()
 		}
 	}
 	
 		
 	requiredAnotherRender() {
-		let st = this.state
-		if (!st.enabled) return false;
-		let again = false
+		//let st = this.curState
+		let curState = this.curState
+		//let again = false
+
+				
+		if (!curState.enabled) return false;
 		
-		if (st.t >= st.duration && st.repeat == 'no') {
+		if (curState.t >= curState.duration && curState.repeat == 'no') {
 			// end forward no repeat
-			st.t = 0
+			curState.t = 0
 			return false
-			// don't disable Animation
+			// don't disable Animation (curState.enabled == true)
 		}
 		
 		
-		if (!st.reverse) { // forward middle
-			if (st.t < st.duration) {	// may overflow, corrected bellow
-				st.t = st.t + st.rate
-				again = true
+		if (!curState.reverse) { // forward middle
+			if (curState.t < curState.duration) {	// may overflow, corrected bellow
+				curState.t = curState.t + curState.rate
+				// again = true
 			}	
 			
-			if (st.t >= st.duration) { // forward end
-				if (st.repeat == 'no') {
-					st.t = st.duration
-					again = true
+			if (curState.t >= curState.duration) { // forward end
+				if (curState.repeat == 'no') {
+					curState.t = curState.duration
+					// again = true
 				}
-				else if (st.repeat == 'yes') {
-					st.t = st.t - st.duration 
-					again = true
+				else if (curState.repeat == 'yes') {
+					curState.t = curState.t - curState.duration 
+					// again = true
 				}
-				else if (st.repeat == 'bounce') {
-					st.reverse = true
-					st.t = (st.duration - (st.t - st.duration)) 
-					again = true
+				else if (curState.repeat == 'bounce') {
+					curState.reverse = true
+					curState.t = (curState.duration - (curState.t - curState.duration)) 
+					// again = true
 				} 
 			}
 		}
 		else { //reverse middle
-			if (st.t > 0 ) {
-				st.t = st.t - st.rate	// may overflow, we correct it bellow
-				again = true
+			if (curState.t > 0 ) {
+				curState.t = curState.t - curState.rate	// may overflow, we correct it bellow
+				// again = true
 			}	
 			
-			if (st.t <= 0) { // reverse start
-				st.reverse = false
-				st.t = -st.t //st.rate
-				again = true
+			if (curState.t <= 0) { // reverse start
+				curState.reverse = false
+				curState.t = -curState.t //curState.rate
+				// again = true
 			}
 		}
 		
-		this.state.enabled = again
-		//console.log('Animation:rerender',st.t,again, this.state.enabled)
-		return again;
+		//curState.enabled = again
+		return true;
+	}
+	
+	shouldComponentUpdate (nextProps, nextState) {
+		return this.componentUpdate
+		
 	}
 	
 	componentWillMount() {
 		//console.log('Animation',this.props)
-		Object.assign(this.state, this.props.newState)
-		//console.log('drs-react-animation:state', this.state)
+		Object.assign(this.curState, this.props.newState)
+		//console.log('drs-react-animation:state', this.curState)
 	}
 	
 	render() {
 		
-		//console.log('drs-react-animation:rendering',this.state.t)
+		//console.log('drs-react-animation:rendering',this.curState.t)
 		const renderedChildren = this.props.children({
-			x: this.state.t/this.state.duration,
-			rate : this.state.rate,
-			firstRender : this.state.firstRender,
-			firstFrame : this.state.t === 0, 
-			lastFrame : this.state.t === this.state.duration,
+			x: this.curState.t/this.curState.duration,
+			rate : this.curState.rate,
+			firstRender : this.curState.firstRender,
+			firstFrame : this.curState.t === 0, 
+			lastFrame : this.curState.t === this.curState.duration,
 			skip : this.skipAnimation.bind(this),
 			toggle : this.toggleAnimation.bind(this),
 			
 		})
 		
-		this.state.firstRender = false
+		// once rendered...
+		this.curState.firstRender = false
 		
 		if (this.requiredAnotherRender()) {
 			setTimeout(()=>{
-				this.setState(this.state)  // works with null?
-			}, this.state.rate)
+				this.forceUpdate() 
+			}, this.curState.rate)
 		}
+		
+		//console.log('drs-react-animator',this.state)
 		
     return renderedChildren && React.Children.only(renderedChildren);	// ensure only one children is returned
 		

@@ -93,14 +93,16 @@ export default class Card extends React.Component {
 					</div>
 				</div>
 				
-				<Animation newState={ {duration:1000, rate: 1000/60} }>
+				<Animation newState={ {duration:3000, rate: 1000/60} }>
 					{ (anim) => { 
-
+							let newStyleText = {}
+							Object.assign(newStyleText, style.text)  // prevent mutation warning
+							
 							if (anim.firstRender) {
 								// firstRender
 								this.state.open = newState.open;
 								this.state.animDirection = 0
-								style.text.height = newState.open ? this.state.maxTextHeight : 0
+								newStyleText.height = newState.open ? this.state.maxTextHeight : 0
 								anim.skip()
 							} else {
 								if (anim.firstFrame) {
@@ -120,13 +122,13 @@ export default class Card extends React.Component {
 									// rest of frames
 									//let y = (this.state.animDirection == 1) ? anim.x : (1-anim.x)
 									let y = (this.state.animDirection == 1) ? ease.easeOutBounce(anim.x) : ease.easeInBounce(1-anim.x)
-									style.text.height = y * this.state.maxTextHeight
+									newStyleText.height = y * this.state.maxTextHeight
 								}
 								
 							}
 
 							return (
-								<div style={style.text}>
+								<div style={newStyleText}>
 									<p>{newState.text}</p>
 								</div>
 							)
